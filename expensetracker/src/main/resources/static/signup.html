@@ -127,7 +127,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Monthly Budget (₹)</label>
-                <input type="number" class="form-control" id="monthlyBudget" value="10000" required>
+                <input type="number" class="form-control" id="budget" value="10000" required>
             </div>
             <button type="submit" class="btn btn-primary btn-signup w-100">Sign Up</button>
         </form>
@@ -138,6 +138,9 @@
 </div>
 
 <script>
+    // 🚀 UPDATED: Using your deployed Render backend
+    const API_URL = 'https://expense-tracker-c8rb.onrender.com';
+
     function showError(msg) {
         const el = document.getElementById('errorMsg');
         el.textContent = msg;
@@ -158,13 +161,13 @@
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
-        const monthlyBudget = document.getElementById('monthlyBudget').value;
+        const budget = parseFloat(document.getElementById('budget').value);
 
         try {
-            const response = await fetch('http://localhost:8080/auth/signup', {
+            const response = await fetch(`${API_URL}/auth/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password, monthlyBudget })
+                body: JSON.stringify({ name, email, password, budget })
             });
 
             if (response.ok) {
@@ -177,7 +180,8 @@
                 showError(error || 'Email already exists or invalid data');
             }
         } catch (error) {
-            showError('Connection error. Please check if server is running.');
+            showError('Connection error. Please check your internet connection.');
+            console.error('Signup error:', error);
         }
     });
 </script>
