@@ -14,11 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins(
-                                "https://incandescent-pavlova-fb9c4e.netlify.app",
-                                "http://localhost:5500",
-                                "http://127.0.0.1:5500"
-                        )
+                        .allowedOriginPatterns("*")  // ← Changed from allowedOrigins("*")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
