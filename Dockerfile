@@ -2,8 +2,18 @@
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Copy the entire project
-COPY . .
+# Copy Maven wrapper files if they exist
+COPY mvnw* ./
+COPY .mvn ./.mvn
+
+# Copy Maven files first for better caching
+COPY pom.xml .
+
+# Download dependencies (this layer will be cached)
+RUN mvn dependency:go-offline -B || true
+
+# Copy source code
+COPY src ./src
 
 # Build the application
 RUN mvn clean package -DskipTests

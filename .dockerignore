@@ -1,0 +1,31 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# IDE files
+.idea
+.vscode
+*.iml
+.project
+.classpath
+.settings
+
+# Build output (we'll build fresh in Docker)
+target/
+*.class
+
+# Screenshots and documentation
+Screenshots/
+*.md
+!README.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+test/
+
+# Logs
+*.log
