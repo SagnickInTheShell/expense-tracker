@@ -6,8 +6,6 @@ WORKDIR /app
 # Copy from the expensetracker subdirectory
 COPY expensetracker/pom.xml .
 COPY expensetracker/src ./src
-COPY expensetracker/mvnw .
-COPY expensetracker/.mvn ./.mvn
 
 # Build the application
 RUN mvn clean package -DskipTests
