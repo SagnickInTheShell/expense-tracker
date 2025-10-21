@@ -1,6 +1,5 @@
 # Git files
 .git
-.gitignore
 .gitattributes
 
 # IDE files
@@ -17,15 +16,16 @@ target/
 
 # Screenshots and documentation
 Screenshots/
-*.md
-!README.md
 
 # OS files
 .DS_Store
 Thumbs.db
 
-# Test files
-test/
-
 # Logs
 *.log
+
+# Don't exclude these important files:
+# !src/
+# !pom.xml
+# !mvnw
+# !.mvn/
