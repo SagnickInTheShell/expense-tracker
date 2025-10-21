@@ -21,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/expenses")
-@CrossOrigin(origins = "*")
+@CrossOrigin(originPatterns = "*")
 public class ExpenseController {
 
     @Autowired
