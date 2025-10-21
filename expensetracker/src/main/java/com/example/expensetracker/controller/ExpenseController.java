@@ -4,11 +4,16 @@ import com.example.expensetracker.entity.Expense;
 import com.example.expensetracker.entity.User;
 import com.example.expensetracker.repository.ExpenseRepository;
 import com.example.expensetracker.repository.UserRepository;
+import com.example.expensetracker.service.ExcelExportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +29,9 @@ public class ExpenseController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ExcelExportService excelExportService;
 
     // GET - List all expenses with filters
     @GetMapping
@@ -139,6 +147,28 @@ public class ExpenseController {
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
+
+    // GET - Export expenses to Excel
+    @GetMapping("/export/excel")
+    public ResponseEntity<InputStreamResource> exportToExcel(@RequestParam Long userId) {
+        try {
+            List<Expense> expenses = expenseRepository.findByUserId(userId);
+
+            ByteArrayInputStream in = excelExportService.exportExpensesToExcel(expenses);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", "attachment; filename=expenses_report.xlsx");
+
+            return ResponseEntity
+                    .ok()
+                    .headers(headers)
+                    .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    .body(new InputStreamResource(in));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }
